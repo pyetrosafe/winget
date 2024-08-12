@@ -20,7 +20,7 @@ Será necessário bem menos passos para automatizar tudo.
 
 ## Como proceder
 
-Faça o download do arquivo [Default Apps Install on New Windows.ps1](./Default Apps Install on New Windows.ps1).
+Faça o download do arquivo [Default Apps Install on New Windows.ps1](/Default%20Apps%20Install%20on%20New%20Windows.ps1).
 Edite o arquivo, adicione ou remova os programas que você deseja instalar automaticamente. Para isso, encontre as linhas com ```winget install ...```.
 
 ### Remover comandos de pacotes originais
