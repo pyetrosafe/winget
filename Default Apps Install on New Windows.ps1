@@ -1,6 +1,18 @@
-cd $env:userprofile\Downloads
-# $policy_original = (Get-ExecutionPolicy)
-# Set-ExecutionPolicy Unrestricted
+# Se a execu√ß√£o de Scripts est√° desabilitada, ou seja, est√° fechando a janela ou dando erro.
+# Execute o comando "Set-ExecutionPolicy Unrestricted"
+# no PowerShell como administrador e tente novamente.
+
+param([switch]$Elevated)
+
+function Test-Admin {
+    $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
+    $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+}
+
+if ((Test-Admin) -eq $false)  {
+    Start-Process powershell.exe -Verb RunAs -ArgumentList ('-ExecutionPolicy Unrestricted -NoProfile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+    exit
+}
 
 function CheckWingetCommand {
     $found_winget = [bool] (Get-Command -ErrorAction Ignore -Type Application winget)
@@ -11,10 +23,10 @@ function DownloadInstallWinget {
     $winget_name = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
     $installer_found = (Test-Path -Path ".\$winget_name")
 
-    Write-Host "Verificando se j· tem o instalador do winget."
+    Write-Host "Verificando se j√° tem o instalador do winget.`n`n"
     Start-Sleep -Milliseconds 500
 
-    $mesg = "Instalador do Winget" + $(if(!($installer_found)){ ' n„o' } ) + " encontrado!"
+    $mesg = "Instalador do Winget" + $(if(!($installer_found)){ ' n√£o' } ) + " encontrado!`n`n"
     Write-Host $mesg
     Start-Sleep -Milliseconds 500
 
@@ -23,7 +35,7 @@ function DownloadInstallWinget {
         Invoke-WebRequest "https://github.com/microsoft/winget-cli/releases/download/v1.9.1792-preview/$winget_name" -OutFile $winget_name
     }
 
-    Write-Host "Abrindo instalador do Winget. Ao terminar volte aqui!"
+    Write-Host "Abrindo instalador do Winget. Ao terminar volte aqui!`n`n"
     Start-Sleep -Milliseconds 700
     & ".\$winget_name"
 }
@@ -33,9 +45,21 @@ function InstallByWinget {
         winget install --accept-source-agreements --accept-package-agreements -e --id=Google.Chrome;
         winget install --accept-source-agreements --accept-package-agreements -e --id=Notepad++.Notepad++;
         winget install --accept-source-agreements --accept-package-agreements -e --id=RARLab.WinRAR;
+
+        # Finalizou
+        Write-Host "A instala√ß√£o dos seus programas terminou.`n`n" -ForegroundColor Green
+        Write-Host "Obrigado!`n`n" -ForegroundColor Yellow
+        Write-Host "Digite 'Enter' para fechar...`n`n" -NoNewLine
+
+        $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+
+        # Set-ExecutionPolicy $policy_original
+        [System.Environment]::Exit(0)
+
+        # Write-Host Script End
     }
     else {
-        $tentarNovamente = $(Read-Host -Prompt "Comando winget n„o encontrado.`n… necess·rio instalar Winget.`nQuer tentar baixar e/ou installar novamente? [S]im : [N]„o")
+        $tentarNovamente = $(Read-Host -Prompt "Comando winget n√£o encontrado.`n`n√â necess√°rio instalar Winget.`nQuer tentar baixar e/ou installar novamente? [S]im : [N]√£o")
         Start-Sleep -Milliseconds 300
         if ($tentarNovamente -eq "S") {
             MainProcessWinget
@@ -44,12 +68,12 @@ function InstallByWinget {
 }
 
 function CheckWingetInstalled {
-    Write-Host "Verificando se winget j· est· instalado!"
+    Write-Host "Verificando se winget j√° est√° instalado!`n`n"
     Start-Sleep -Milliseconds 500
 
     $found_winget = CheckWingetCommand
 
-    $mesg = "Winget" + $(if(!($found_winget)){ ' n„o' } ) + " encontrado!"
+    $mesg = "Winget" + $(if(!($found_winget)){ ' n√£o' } ) + " encontrado!`n`n"
     Write-Host $mesg
     Start-Sleep -Milliseconds 500
 
@@ -60,7 +84,7 @@ function MainProcessWinget {
 
     if (!(CheckWingetInstalled)) {
         DownloadInstallWinget
-        $question = 'Terminou a instalaÁ„o? [S]im : [N]„o : [C]ancelar'
+        $question = "Terminou a instala√ß√£o? [S]im : [N]√£o : [C]ancelar`n"
         $installEnds = $(Read-Host -Prompt $question)
         while ($installEnds -eq "N") {
             Start-Sleep -Seconds 1
@@ -74,9 +98,15 @@ function MainProcessWinget {
     }
 }
 
-Write-Host "Iniciando script de instalaÁ„o com winget!"
-Start-Sleep -Milliseconds 500
+if ($elevated) {
+    # $policy_original = (Get-ExecutionPolicy)
+    # Set-ExecutionPolicy Unrestricted
 
-MainProcessWinget
+    cd $env:userprofile\Desktop
+    Write-Host "Iniciando script de instala√ß√£o com winget!`n`n" -ForegroundColor Yellow
+    Start-Sleep -Milliseconds 500
 
-# Set-ExecutionPolicy $policy_original
+    MainProcessWinget
+
+    # Set-ExecutionPolicy $policy_original
+}
