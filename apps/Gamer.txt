@@ -1,0 +1,26 @@
+# Tools
+Nvidia.GeForceExperience
+Discord.Discord
+Logitech.GHUB
+
+# Bibliotecas de jogos
+Valve.Steam
+EpicGames.EpicGamesLauncher
+GOG.Galaxy
+Ubisoft.Connect
+
+# Sensores de hardware
+Guru3D.Afterburner
+TechPowerUp.GPU-Z
+CPUID.HWMonitor
+REALiX.HWiNFO
+
+# Testes de performance
+Maxon.CinebenchR23
+Unigine.HeavenBenchmark
+Unigine.ValleyBenchmark
+Unigine.SuperpositionBenchmark
+PrimateLabs.Geekbench.4
+PrimateLabs.Geekbench.5
+PrimateLabs.Geekbench.6
+FinalWire.AIDA64.Extreme
