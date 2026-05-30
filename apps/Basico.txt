@@ -1,0 +1,17 @@
+# Browsers
+Mozilla.Firefox
+Google.Chrome
+
+# Tools
+RARLab.WinRAR
+Apache.OpenOffice
+Notepad++.Notepad++
+Google.GoogleDrive
+VideoLAN.VLC
+OBSProject.OBSStudio
+
+# WhatsApp
+9NKSQGP7F2NH
+
+# Installs a number of runtime libraries from the legacy DirectX SDK for some games that use D3DX9, D3DX10, D3DX11, XAudio 2.7, XInput 1.3, XACT, and/or Managed DirectX 1.1
+Microsoft.DirectX

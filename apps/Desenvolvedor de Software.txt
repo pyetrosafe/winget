@@ -1,0 +1,32 @@
+# Browsers
+Mozilla.Firefox
+Google.Chrome
+
+# Tools
+RARLab.WinRAR
+Apache.OpenOffice
+TeamViewer.TeamViewer
+Microsoft.WindowsTerminal
+CoreyButler.NVMforWindows
+
+# Editors
+BlenderFoundation.Blender
+Notepad++.Notepad++
+Microsoft.VisualStudioCode
+Orwell.Dev-C++
+
+# Hardware Sensors
+TechPowerUp.GPU-Z
+CPUID.HWMonitor
+REALiX.HWiNFO
+CrystalDewWorld.CrystalDiskMark
+
+# Dbeaver
+9PNKDR50694P
+
+# WSL
+9P9TQF7MRM4R
+
+Microsoft.DotNet.Runtime.5
+Microsoft.DotNet.Runtime.6
+Microsoft.DotNet.Runtime.7
