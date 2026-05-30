@@ -1,4 +1,4 @@
-# Se a execuÁ?o de Scripts est· desabilitada, ou seja, est· fechando a janela ou dando erro.
+# Se a execu√ß√£o de Scripts est√° desabilitada, ou seja, est√° fechando a janela ou dando erro.
 # Execute o comando "Set-ExecutionPolicy Unrestricted"
 # no PowerShell como administrador e tente novamente.
 
@@ -29,10 +29,10 @@ function DownloadInstallWinget {
     $winget_name = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
     $installer_found = (Test-Path -Path ".\$winget_name")
 
-    Write-Host "Verificando se j· tem o instalador do winget.`n`n"
+    Write-Host "Verificando se j√° tem o instalador do winget.`n`n"
     Start-Sleep -Milliseconds 500
 
-    $mesg = "Instalador do Winget" + $(if(!($installer_found)){ ' n?o' } ) + " encontrado!`n`n"
+    $mesg = "Instalador do Winget" + $(if(!($installer_found)){ ' n√£o' } ) + " encontrado!`n`n"
     Write-Host $mesg -ForegroundColor $Cor[$installer_found]
     Start-Sleep -Milliseconds 500
 
@@ -52,20 +52,20 @@ function Show-Menu {
 
     $selectedIndex = 0
 
-    # Imprime o cabeÁalho apenas uma vez (fora do laÁo de repetiÁ?o)
+    # Imprime o cabe√ßalho apenas uma vez (fora do la√ßo de repeti√ß√£o)
     Write-Host "`n=== SELECIONE A LISTA DE APLICATIVOS ===" -ForegroundColor Cyan
     Write-Host "Use as setas para CIMA e BAIXO para navegar e ENTER para escolher." -ForegroundColor Yellow
 
-    # Salva a posiÁ?o atual da linha em que o cursor est· (eixo Y)
+    # Salva a posi√ß√£o atual da linha em que o cursor est√° (eixo Y)
     $linhaInicial = [Console]::CursorTop
 
     while ($true) {
-        # Posiciona o cursor de volta na linha inicial salva antes de desenhar as opÁ?es
+        # Posiciona o cursor de volta na linha inicial salva antes de desenhar as op√ß√µes
         [Console]::SetCursorPosition(0, $linhaInicial)
 
-        # Desenha as opÁ?es na tela, sobrescrevendo as anteriores
+        # Desenha as op√ß√µes na tela, sobrescrevendo as anteriores
         for ($i = 0; $i -lt $ListaDeArquivos.Count; $i++) {
-            # Os espaÁos extras no final garantem que o texto anterior seja totalmente coberto
+            # Os espa√ßos extras no final garantem que o texto anterior seja totalmente coberto
             if ($i -eq $selectedIndex) {
                 Write-Host " -> $($ListaDeArquivos[$i].Name)        " -ForegroundColor Green
             } else {
@@ -73,10 +73,10 @@ function Show-Menu {
             }
         }
 
-        # Captura a tecla pressionada pelo usu·rio
+        # Captura a tecla pressionada pelo usu√°rio
         $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
 
-        # LÛgica de navegaÁ?o
+        # L√≥gica de navega√ß√£o
         if ($key -eq 38) {
             # Seta para CIMA
             $selectedIndex--
@@ -87,7 +87,7 @@ function Show-Menu {
             if ($selectedIndex -ge $ListaDeArquivos.Count) { $selectedIndex = 0 }
         } elseif ($key -eq 13) {
             # Tecla ENTER
-            # Pula o cursor para baixo do menu antes de retornar, para n?o atrapalhar os prÛximos prints
+            # Pula o cursor para baixo do menu antes de retornar, para n√£o atrapalhar os pr√≥ximos prints
             $linhaFinal = $linhaInicial + $ListaDeArquivos.Count
             [Console]::SetCursorPosition(0, $linhaFinal)
             Write-Host "`n"
@@ -98,17 +98,17 @@ function Show-Menu {
 }
 
 function GetAppsList {
-    # Descobre a pasta onde este script est· salvo
+    # Descobre a pasta onde este script est√° salvo
     $scriptDir = $PSScriptRoot
     $appsDir = Join-Path -Path $scriptDir -ChildPath "apps"
 
     # Verifica se a pasta 'apps' existe
     if (-not (Test-Path -Path $appsDir)) {
-        Write-Host "ERRO: A pasta 'apps' n?o foi encontrada.`n" -ForegroundColor Red
+        Write-Host "ERRO: A pasta 'apps' n√£o foi encontrada.`n" -ForegroundColor Red
         return $null
     }
 
-    # L? os arquivos de texto (.txt) dentro da pasta 'apps'[cite: 3]
+    # L√™ os arquivos de texto (.txt) dentro da pasta 'apps'[cite: 3]
     $arquivosDisponiveis = Get-ChildItem -Path $appsDir -Filter *.txt
 
     if ($arquivosDisponiveis.Count -eq 0) {
@@ -116,7 +116,7 @@ function GetAppsList {
         return $null
     }
 
-    # PREPARA«?O DO MENU: Criamos uma lista customizada de opÁ?es
+    # PREPARA√á√ÉO DO MENU: Criamos uma lista customizada de op√ß√µes
     $opcoesMenu = @()
 
     # 1. Adicionamos todos os arquivos reais encontrados
@@ -128,7 +128,7 @@ function GetAppsList {
         }
     }
 
-    # 2. Adicionamos a opÁ?o extra no final da lista
+    # 2. Adicionamos a op√ß√£o extra no final da lista
     $opcoesMenu += [PSCustomObject]@{
         Name = "Todos arquivos"
         FullName = ""
@@ -137,11 +137,11 @@ function GetAppsList {
 
     # Exibe o menu e guarda o arquivo escolhido
     $arquivoEscolhido = Show-Menu -ListaDeArquivos $opcoesMenu
-    Write-Host "Iniciando a instalaÁ?o da lista: $($arquivoEscolhido.Name)`n" -ForegroundColor Cyan
+    Write-Host "Iniciando a instala√ß√£o da lista: $($arquivoEscolhido.Name)`n" -ForegroundColor Cyan
 
     $conteudoBruto = @()
 
-    # Verifica se o usu·rio escolheu "Todos arquivos"
+    # Verifica se o usu√°rio escolheu "Todos arquivos"
     if ($arquivoEscolhido.IsAll) {
         foreach ($arquivo in $arquivosDisponiveis) {
             $conteudoBruto += Get-Content $arquivo.FullName
@@ -150,7 +150,7 @@ function GetAppsList {
         $conteudoBruto = Get-Content $arquivoEscolhido.FullName
     }
 
-    # L? o conte˙do do arquivo, ignora linhas vazias e linhas que comeÁam com '#' (coment·rios)[cite: 3]
+    # L√™ o conte√∫do do arquivo, ignora linhas vazias e linhas que come√ßam com '#' (coment√°rios)[cite: 3]
     # E remove duplicatas com o "Select-Object -Unique"
     return $conteudoBruto | Where-Object { $_ -match '\S' -and $_ -notmatch '^\s*#' } | Select-Object -Unique
 }
@@ -158,9 +158,9 @@ function GetAppsList {
 function InstallByWinget {
     if (CheckWingetCommand) {
 
-        Write-Host "Caso algum programa da lista j· esteja instalado, o que deseja fazer?`n" -ForegroundColor Cyan
-        Write-Host "[A]tualizar (Instala a vers?o mais recente por cima)"
-        Write-Host "[M]anter (Ignora a instalaÁ?o se o programa j· existir)`n"
+        Write-Host "Caso algum programa da lista j√° esteja instalado, o que deseja fazer?`n" -ForegroundColor Cyan
+        Write-Host "[A]tualizar (Instala a vers√£o mais recente por cima)"
+        Write-Host "[M]anter (Ignora a instala√ß√£o se o programa j√° existir)`n"
         Write-Host "Escolha: " -NoNewLine
 
         do {
@@ -170,7 +170,7 @@ function InstallByWinget {
 
         $conteudoLista = GetAppsList
 
-            # Encerra execuÁ?o caso lista È nula OU se a quantidade de itens È zero (caso o .txt n?o tenha IDs v·lidos)
+            # Encerra execu√ß√£o caso lista √© nula OU se a quantidade de itens √© zero (caso o .txt n√£o tenha IDs v√°lidos)
         if ($null -eq $conteudoLista -or $conteudoLista.Length -eq 0) {
             Write-Host "`nNenhum aplicativo para instalar." -ForegroundColor Red
             return
@@ -183,26 +183,26 @@ function InstallByWinget {
             if ($escolhaAtualizacao -eq 'M') {
                 Write-Host "Verificando: $appIdLimpo ... " -NoNewLine -ForegroundColor DarkGray
 
-                # Executa o 'winget list'. O "2>&1" captura qualquer saÌda para a vari·vel
+                # Executa o 'winget list'. O "2>&1" captura qualquer sa√≠da para a vari√°vel
                 $checkInstall = winget list -e --id=$appIdLimpo 2>&1
-                # Se a saÌda contiver o ID procurado, o app j· est· no sistema
+                # Se a sa√≠da contiver o ID procurado, o app j√° est√° no sistema
                 if ($checkInstall -match [regex]::Escape($appIdLimpo)) {
-                    Write-Host "---> J· instalado. Mantendo vers?o atual.`n" -ForegroundColor DarkGreen
+                    Write-Host "---> J√° instalado. Mantendo vers√£o atual.`n" -ForegroundColor DarkGreen
                     continue
                 }
 
-                Write-Host "---> N?o encontrado.`n" -ForegroundColor DarkGray
+                Write-Host "---> N√£o encontrado.`n" -ForegroundColor DarkGray
             }
 
             Write-Host "Instalando: $appIdLimpo ...`n" -ForegroundColor Yellow
 
-            # Comando de instalaÁ?o
+            # Comando de instala√ß√£o
             winget install --accept-source-agreements --accept-package-agreements -e --id=$appIdLimpo
         }
     }
     else {
-        Write-Host "`rComando winget n?o encontrado.`n… necess·rio instalar Winget`n"  -NoNewLine -ForegroundColor Red
-        Write-Host "`rQuer tentar baixar e/ou instalar novamente? [S]im : [N]?o" -NoNewLine
+        Write-Host "`rComando winget n√£o encontrado.`n√â necess√°rio instalar Winget`n"  -NoNewLine -ForegroundColor Red
+        Write-Host "`rQuer tentar baixar e/ou instalar novamente? [S]im : [N]√£o" -NoNewLine
         do {
             $key = [Console]::ReadKey($true).KeyChar.ToString().ToUpper()
             Start-Sleep -Milliseconds 300
@@ -218,12 +218,12 @@ function InstallByWinget {
 }
 
 function CheckWingetInstalled {
-    Write-Host "Verificando se winget j· est· instalado!`n"
+    Write-Host "Verificando se winget j√° est√° instalado!`n"
     Start-Sleep -Milliseconds 500
 
     $found_winget = CheckWingetCommand
 
-    $mesg = "Winget" + $(if(!($found_winget)){ ' n?o' } ) + " encontrado!`n"
+    $mesg = "Winget" + $(if(!($found_winget)){ ' n√£o' } ) + " encontrado!`n"
     Write-Host $mesg -ForegroundColor $Cor[$found_winget]
     Start-Sleep -Milliseconds 500
 
@@ -237,7 +237,7 @@ function MainProcessWinget {
 
         do {
             if ($key -match "^[Nn]") {
-                Write-Host "`rTerminou a instalaÁ?o? [S]im : [N]?o : [C]ancelar" -NoNewLine
+                Write-Host "`rTerminou a instala√ß√£o? [S]im : [N]√£o : [C]ancelar" -NoNewLine
             }
 
             $key = [Console]::ReadKey($true).KeyChar.ToString().ToUpper()
@@ -245,7 +245,7 @@ function MainProcessWinget {
 
             if ($key -match "^[Nn]") {
                 Write-Host "`n$key"
-                Write-Host "`nVerifique a janela de instalaÁ?o e se necess·rio aguarde mais um pouco enquanto termina de instalar.`n" -ForegroundColor Yellow
+                Write-Host "`nVerifique a janela de instala√ß√£o e se necess√°rio aguarde mais um pouco enquanto termina de instalar.`n" -ForegroundColor Yellow
                 Start-Sleep -Seconds 2
             }
         }
@@ -266,11 +266,11 @@ function MainProcessWinget {
         Write-Host "`n"
         Write-Host "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" -ForegroundColor Green
         Write-Host "=                                                             =" -ForegroundColor Green
-        Write-Host "=          A instalaÁ?o dos seus programas terminou.          =" -ForegroundColor Green
+        Write-Host "=          A instala√ß√£o dos seus programas terminou.          =" -ForegroundColor Green
         Write-Host "=                                                             =" -ForegroundColor Green
         Write-Host "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" -ForegroundColor Green
 
-        Write-Host "`nDeseja instalar outro preset (lista de apps)? [S]im / [N]?o " -ForegroundColor Yellow -NoNewLine
+        Write-Host "`nDeseja instalar outro preset (lista de apps)? [S]im / [N]√£o " -ForegroundColor Yellow -NoNewLine
         $key = [Console]::ReadKey($true).KeyChar.ToString().ToUpper()
         Write-Host "`n$key`n"
         $repetir = $key -eq "S"
@@ -294,10 +294,10 @@ function FecharTerminal {
 }
 
 if ($elevated) {
-    # Garante que est· na pasta do script
+    # Garante que est√° na pasta do script
     Set-Location -Path $PSScriptRoot
 
-    Write-Host "Iniciando script de instalaÁ?o com winget!`n" -ForegroundColor Yellow
+    Write-Host "Iniciando script de instala√ß√£o com winget!`n" -ForegroundColor Yellow
     Start-Sleep -Milliseconds 500
 
     MainProcessWinget
