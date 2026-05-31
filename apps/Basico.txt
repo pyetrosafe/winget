@@ -9,6 +9,7 @@ Notepad++.Notepad++
 Google.GoogleDrive
 VideoLAN.VLC
 OBSProject.OBSStudio
+Wagnardsoft.DisplayDriverUninstaller
 
 # WhatsApp
 9NKSQGP7F2NH

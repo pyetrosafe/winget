@@ -8,6 +8,7 @@ Apache.OpenOffice
 TeamViewer.TeamViewer
 Microsoft.WindowsTerminal
 CoreyButler.NVMforWindows
+Wagnardsoft.DisplayDriverUninstaller
 
 # Editors
 BlenderFoundation.Blender

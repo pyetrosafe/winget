@@ -2,6 +2,7 @@
 Nvidia.GeForceExperience
 Discord.Discord
 Logitech.GHUB
+Wagnardsoft.DisplayDriverUninstaller
 
 # Bibliotecas de jogos
 Valve.Steam
